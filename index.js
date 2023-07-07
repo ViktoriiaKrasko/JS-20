@@ -42,28 +42,28 @@ Vehicle.valueOf = function () {
 
 //Створюємо Car - це ще один конструктор, який наслідує властивості і методи з Vehicle за допомогою функції apply.
 function Car(brand, model, year, mileage, fuelType, speed) {
-  Vehicle.call(this, brand, [model, year, mileage]); // Викликаємо конструктор Vehicle за допомогою apply, передаємо в нього this, [brand, model, year, mileage].
+  Vehicle.apply(this, [brand, model, year, mileage]); // Викликаємо конструктор Vehicle за допомогою apply, передаємо в нього this, [brand, model, year, mileage].
   this.fuelType = fuelType;
   this.speed = speed; //  Записуєм в this.fuelType значення аргументу fuelType, в this.speed значення аргументу speed
 }
 
-Car = Object.create(Vehicle); // Ми можемо перевизначити методи з Vehicle в Car.
+// Ми можемо перевизначити методи з Vehicle в Car.
 
-Car.toString = function () {
+Car.prototype.toString = function () {
   return `${this.brand} ${this.model} ${this.year} - ${this.fuelType}`;
 }; // Рядковому представленю прототипу Car призначаємо функцію яка повертає рядок: <brand> <model> <year> - <fuelType>.
 
-Car.accelerate = function (value) {
+Car.prototype.accelerate = function (value) {
   this.speed += value;
   console.log(
     `Автомобіль ${this.brand} ${this.model} прискорився до швидкості ${this.speed} км/год`
   );
 }; // Cтворюємо метод accelerate для прискорення швидкості прототипу Car, збільшує this.speed на передане число та виводить рядок в консоль: Автомобіль <make> <model> прискорився до швидкості <speed> км/год
 
-Car.brake = function () {
+Car.prototype.brake = function (value) {
   this.speed -= value;
   console.log(
-    `Автомобіль ${this.brand} ${this.model} зменшив до швидкості ${this.speed} км/год`
+    `Автомобіль ${this.brand} ${this.model} зменшив швидкість до ${this.speed} км/год`
   );
 }; // Метод brake для гальмування прототипу Car,зменшує this.speed на передане число та виводить рядок в консоль в консоль: Автомобіль <make> <model> зменшив до швидкості <speed> км/год
 
@@ -132,8 +132,8 @@ function Truck(
   this.weight = weight; //  Записуєм в this.color значення аргументу color, в this.engineType значення аргументу engineType і так далі зі всіми аргументами
 }
 
-Truck = Object.create(Vehicle); // Додатковий метод specific для прототипу Trucks, примає число якщо воно більше towingCapacity виводить рядок в консоль: Навантаження занадто важке для буксирування, якщо ні то рядок Тягнення навантаження...
-Truck.specific = function (value) {
+// Додатковий метод specific для прототипу Trucks, примає число якщо воно більше towingCapacity виводить рядок в консоль: Навантаження занадто важке для буксирування, якщо ні то рядок Тягнення навантаження...
+Truck.prototype.specific = function (value) {
   if (value > this.towingCapacity) {
     console.log("Навантаження занадто важке для буксирування");
   } else {
@@ -179,9 +179,7 @@ myTruck.specific(20000); // Викликаємо метод tow з вагою б
 
 Car.drive = function (value) {
   this.mileage += value;
-  console.log(
-    `Подорожуємо ${this.value} кілометрів у ${this.brand} ${this.model}.`
-  );
+  console.log(`Подорожуємо ${value} кілометрів у ${this.brand} ${this.model}.`);
 }; // Додаємо метод drive для прототипу Car, який збільшує kilometers на передане число, та виводить Подорожуємо <kilometers> кілометрів у <brand> <model>.
 
 const newCar = Car.drive.bind(car); // Використовуємо bind для зв'язування методу drive з конкретним об'єктом car.
@@ -209,9 +207,7 @@ function ElectricCar(brand, model, year, mileage, batteryCapacity) {
   this.batteryCapacity = batteryCapacity; //  Записуєм в this.batteryCapacity значення аргументу batteryCapacity
 }
 
-ElectricCar = Object.create(Car);
-
-ElectricCar.toString = function () {
+ElectricCar.prototype.toString = function () {
   return `${this.brand} ${this.model} ${this.year} - Батарея: ${this.batteryCapacity} kWh`;
 }; // Перевизначаємо toString для прототипу ElectricCar він має повертати <brand> <model> <year> - Батарея: <batteryCapacity> kWh
 
