@@ -202,7 +202,7 @@ newCar(100); // Викликаємо функцію зі значенням 100,
  */
 
 function ElectricCar(brand, model, year, mileage, batteryCapacity) {
-  if (!(this instanceof ElectricCar)) {
+  if (!new.target) {
     throw new Error("Конструктор має бути викликаний з 'new'");
   } // Перевіряємо, чи функцію було викликано з new, якщо ні виволимо помилку "Конструктор має бути викликаний з 'new'"
   Car.call(this, brand, model, year, mileage); // Викликаємо Car.call та передаємо в нього this, brand, model, year, mileage
